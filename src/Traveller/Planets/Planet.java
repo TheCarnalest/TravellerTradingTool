@@ -4,10 +4,10 @@ import Traveller.PlanetCodes.TradeCodes.TradeCode;
 import Traveller.PlanetCodes.TravelCodes.TravelCode;
 
 public class Planet {
-    String name;
+    public String name;
     
-    int population;
+    public int population;
 
-    TradeCode[] trade_codes;
-    TravelCode travel_code;
+    public TradeCode[] trade_codes;
+    public TravelCode travel_code;
 }
