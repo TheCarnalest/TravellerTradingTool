@@ -1,29 +1,28 @@
 package Traveller.TradeGoods;
 
 import Traveller.PlanetCodes.PlanetCode;
-import Traveller.PlanetCodes.TradeCodes.TradeCode;
 import Traveller.Planets.Planet;
 import java.util.HashMap;
 
 public abstract class TradeGood {
     /// Name or type of the trade good
-    String name;
+    public String name;
 
-    /// Planet codes on which this trade good can be bought
-    PlanetCode[] availability;
+    /// Planet codes on which this trade good can be bought, empty if it can be bought anywhere
+    private PlanetCode[] availability;
 
     /// How many 6-sided dice are rolled to determine how many tons can be bought, result multiplied by tons_multiplier
-    int tons_dice;
+    private int tons_dice;
     /// Multiplier to the result of the tons_dice roll on how many tons can be bought
-    int tons_multiplier;
+    private int tons_multiplier;
 
     /// Price in credits for one ton of the trade good
-    double base_price;
+    public double base_price;
 
     /// Planet codes and their modifiers added when purchasing, or subtracted when selling
-    HashMap<PlanetCode, Integer> purchase_modifiers;
+    private HashMap<PlanetCode, Integer> purchase_modifiers;
     /// Planet codes and their modifiers added when selling, or subtracted when purchasing
-    HashMap<PlanetCode, Integer> sale_modifiers;
+    private HashMap<PlanetCode, Integer> sale_modifiers;
 
     /// The assumed outcome of rolling 2D6 for trading, for simplicity
     private static final int NORMAL_TRADE_ROLL = 8;
@@ -47,6 +46,40 @@ public abstract class TradeGood {
         0.75f, 0.80f, 0.85f, 0.90f, 1.00f, 1.05f, 1.10f, 1.15f, 1.20f, 1.25f,
         1.30f, 1.40f, 1.50f, 1.60f, 1.75f, 2.00f, 2.50f, 3.00f, 4.00f
     };
+
+    public int get_maximum_tons(Planet planet) {
+        int dice_modifier = planet.population - 6;
+        return (tons_dice * 6 + dice_modifier) * tons_multiplier;
+    }
+
+    public int get_maximum_tons() {
+        return tons_dice * 6 * tons_multiplier;
+    }
+
+    public boolean is_available_on(Planet planet) {
+        for (PlanetCode planet_code : planet.get_planet_codes()) {
+            if (is_available_on(planet_code)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean is_available_on(PlanetCode planet_code) {
+        // Empty availability indicates the trade good is always available
+        if (availability.length == 0) {
+            return true;
+        }
+
+        for (PlanetCode availability_code : availability) {
+            if (planet_code == availability_code) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Gets the price to purchase a number of tons of this trade good
@@ -95,9 +128,7 @@ public abstract class TradeGood {
     private int get_planet_purchase_modifier(Planet planet) {
         int modifier = 0;
 
-        modifier += get_purchase_modifier(planet.travel_code);
-
-        for (TradeCode trade_code : planet.trade_codes) {
+        for (PlanetCode trade_code : planet.get_planet_codes()) {
             modifier += get_purchase_modifier(trade_code);
         }
 
@@ -107,9 +138,7 @@ public abstract class TradeGood {
     private int get_planet_sale_modifier(Planet planet) {
         int modifier = 0;
 
-        modifier += get_sale_modifier(planet.travel_code);
-
-        for (TradeCode trade_code : planet.trade_codes) {
+        for (PlanetCode trade_code : planet.get_planet_codes()) {
             modifier += get_sale_modifier(trade_code);
         }
 
