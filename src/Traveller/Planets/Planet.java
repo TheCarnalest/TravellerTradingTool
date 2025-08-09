@@ -1,8 +1,6 @@
 package Traveller.Planets;
 
-import Traveller.PlanetCodes.PlanetCode;
-import Traveller.PlanetCodes.TradeCodes.TradeCode;
-import Traveller.PlanetCodes.TravelCodes.TravelCode;
+import Traveller.PlanetCode;
 import java.util.Arrays;
 
 public class Planet {
@@ -10,8 +8,8 @@ public class Planet {
     
     public int population;
 
-    private TradeCode[] trade_codes;
-    private TravelCode travel_code;
+    private PlanetCode[] trade_codes;
+    private PlanetCode travel_code;
 
     public PlanetCode[] get_planet_codes() {
         PlanetCode[] planet_codes = Arrays.copyOf(trade_codes, trade_codes.length + 1);
