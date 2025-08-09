@@ -24,7 +24,6 @@ public enum TradeGood {
             entry(PlanetCode.POOR, 1)
         )
     ),
-
     COMMON_INDUSTRIAL_GOODS(
         "Common Industrial Goods",
         set(),                    // All
@@ -39,7 +38,6 @@ public enum TradeGood {
             entry(PlanetCode.AGRICULTURAL, 2)
         )
     ),
-
     COMMON_MANUFACTURED_GOODS(
         "Common Manufactured Goods",
         set(),                    // All
@@ -54,7 +52,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_POPULATION, 2)
         )
     ),
-
     COMMON_RAW_MATERIALS(
         "Common Raw Materials",
         set(),                    // All
@@ -69,7 +66,6 @@ public enum TradeGood {
             entry(PlanetCode.POOR, 2)
         )
     ),
-
     COMMON_CONSUMABLES(
         "Common Consumables",
         set(),                    // All
@@ -88,7 +84,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_POPULATION, 1)
         )
     ),
-
     COMMON_ORE(
         "Common Ore",
         set(),                    // All
@@ -102,7 +97,6 @@ public enum TradeGood {
             entry(PlanetCode.NON_INDUSTRIAL, 1)
         )
     ),
-
     ADVANCED_ELECTRONICS(
         "Advanced Electronics",
         set(PlanetCode.INDUSTRIAL, PlanetCode.HIGH_TECH),
@@ -118,7 +112,6 @@ public enum TradeGood {
             entry(PlanetCode.ASTEROID, 3)
         )
     ),
-
     ADVANCED_MACHINE_PARTS(
         "Advanced Machine Parts",
         set(PlanetCode.INDUSTRIAL, PlanetCode.HIGH_TECH),
@@ -133,7 +126,6 @@ public enum TradeGood {
             entry(PlanetCode.NON_INDUSTRIAL, 1)
         )
     ),
-
     ADVANCED_MANUFACTURED_GOODS(
         "Advanced Manufactured Goods",
         set(PlanetCode.INDUSTRIAL, PlanetCode.HIGH_TECH),
@@ -147,7 +139,6 @@ public enum TradeGood {
             entry(PlanetCode.RICH, 2)
         )
     ),
-
     ADVANCED_WEAPONS(
         "Advanced Weapons",
         set(PlanetCode.INDUSTRIAL, PlanetCode.HIGH_TECH),
@@ -162,7 +153,6 @@ public enum TradeGood {
             entry(PlanetCode.RED_ZONE, 4)
         )
     ),
-
     ADVANCED_VEHICLES(
         "Advanced Vehicles",
         set(PlanetCode.INDUSTRIAL, PlanetCode.HIGH_TECH),
@@ -176,7 +166,6 @@ public enum TradeGood {
             entry(PlanetCode.RICH, 2)
         )
     ),
-
     BIOCHEMICALS(
         "Biochemicals",
         set(PlanetCode.AGRICULTURAL, PlanetCode.WATERWORLD),
@@ -190,7 +179,6 @@ public enum TradeGood {
             entry(PlanetCode.INDUSTRIAL, 2)
         )
     ),
-
     CRYSTALS_AND_GEMS(
         "Crystals & Gems",
         set(PlanetCode.ASTEROID, PlanetCode.DESERT, PlanetCode.ICE_CAPPED),
@@ -206,7 +194,6 @@ public enum TradeGood {
             entry(PlanetCode.RICH, 2)
         )
     ),
-
     CYBERNETICS(
         "Cybernetics",
         set(PlanetCode.HIGH_TECH),
@@ -221,7 +208,6 @@ public enum TradeGood {
             entry(PlanetCode.RICH, 2)
         )
     ),
-
     LIVE_ANIMALS(
         "Live Animals",
         set(PlanetCode.AGRICULTURAL, PlanetCode.GARDEN),
@@ -234,7 +220,6 @@ public enum TradeGood {
             entry(PlanetCode.LOW_POPULATION, 3)
         )
     ),
-
     LUXURY_CONSUMABLES(
         "Luxury Consumables",
         set(PlanetCode.AGRICULTURAL, PlanetCode.GARDEN, PlanetCode.WATERWORLD),
@@ -249,7 +234,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_POPULATION, 2)
         )
     ),
-
     LUXURY_GOODS(
         "Luxury Goods",
         set(PlanetCode.HIGH_POPULATION),
@@ -262,7 +246,6 @@ public enum TradeGood {
             entry(PlanetCode.RICH, 4)
         )
     ),
-
     MEDICAL_SUPPLIES(
         "Medical Supplies",
         set(PlanetCode.HIGH_TECH, PlanetCode.HIGH_POPULATION),
@@ -277,7 +260,6 @@ public enum TradeGood {
             entry(PlanetCode.RICH, 1)
         )
     ),
-
     PETROCHEMICALS(
         "Petrochemicals",
         set(PlanetCode.DESERT, PlanetCode.FLUID_OCEANS, PlanetCode.ICE_CAPPED, PlanetCode.WATERWORLD),
@@ -292,7 +274,6 @@ public enum TradeGood {
             entry(PlanetCode.LOW_TECH, 2)
         )
     ),
-
     PHARMACEUTICALS(
         "Pharmaceuticals",
         set(PlanetCode.ASTEROID, PlanetCode.DESERT, PlanetCode.HIGH_POPULATION, PlanetCode.WATERWORLD),
@@ -307,7 +288,6 @@ public enum TradeGood {
             entry(PlanetCode.LOW_TECH, 1)
         )
     ),
-
     POLYMERS(
         "Polymers",
         set(PlanetCode.INDUSTRIAL),
@@ -321,7 +301,6 @@ public enum TradeGood {
             entry(PlanetCode.NON_INDUSTRIAL, 1)
         )
     ),
-
     PRECIOUS_METALS(
         "Precious Metals",
         set(PlanetCode.ASTEROID, PlanetCode.DESERT, PlanetCode.ICE_CAPPED, PlanetCode.FLUID_OCEANS),
@@ -338,7 +317,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_TECH, 1)
         )
     ),
-
     RADIOACTIVES(
         "Radioactives",
         set(PlanetCode.ASTEROID, PlanetCode.DESERT, PlanetCode.LOW_POPULATION),
@@ -355,7 +333,6 @@ public enum TradeGood {
             entry(PlanetCode.AGRICULTURAL, -3)
         )
     ),
-
     ROBOTS(
         "Robots",
         set(PlanetCode.INDUSTRIAL),
@@ -369,7 +346,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_TECH, 1)
         )
     ),
-
     SPICES(
         "Spices",
         set(PlanetCode.GARDEN, PlanetCode.DESERT, PlanetCode.WATERWORLD),
@@ -384,7 +360,6 @@ public enum TradeGood {
             entry(PlanetCode.POOR, 3)
         )
     ),
-
     TEXTILES(
         "Textiles",
         set(PlanetCode.AGRICULTURAL, PlanetCode.NON_INDUSTRIAL),
@@ -398,7 +373,6 @@ public enum TradeGood {
             entry(PlanetCode.NON_AGRICULTURAL, 2)
         )
     ),
-
     UNCOMMON_ORE(
         "Uncommon Ore",
         set(PlanetCode.ASTEROID, PlanetCode.ICE_CAPPED),
@@ -412,7 +386,6 @@ public enum TradeGood {
             entry(PlanetCode.NON_INDUSTRIAL, 1)
         )
     ),
-
     UNCOMMON_RAW_MATERIALS(
         "Uncommon Raw Materials",
         set(PlanetCode.AGRICULTURAL, PlanetCode.DESERT, PlanetCode.WATERWORLD),
@@ -427,7 +400,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_TECH, 1)
         )
     ),
-
     WOOD(
         "Wood",
         set(PlanetCode.AGRICULTURAL, PlanetCode.GARDEN),
@@ -441,7 +413,6 @@ public enum TradeGood {
             entry(PlanetCode.INDUSTRIAL, 1)
         )
     ),
-
     VEHICLES(
         "Vehicles",
         set(PlanetCode.INDUSTRIAL, PlanetCode.HIGH_TECH),
@@ -456,7 +427,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_POPULATION, 1)
         )
     ),
-
     ILLEGAL_BIOCHEMICALS(
         "Illegal Biochemicals",
         set(PlanetCode.AGRICULTURAL, PlanetCode.WATERWORLD),
@@ -469,7 +439,6 @@ public enum TradeGood {
             entry(PlanetCode.INDUSTRIAL, 6)
         )
     ),
-
     CYBERNETICS_ILLEGAL(
         "Cybernetics, Illegal",
         set(PlanetCode.HIGH_TECH),
@@ -486,7 +455,6 @@ public enum TradeGood {
             entry(PlanetCode.RED_ZONE, 6)
         )
     ),
-
     DRUGS_ILLEGAL(
         "Drugs, Illegal",
         set(PlanetCode.ASTEROID, PlanetCode.DESERT, PlanetCode.HIGH_POPULATION, PlanetCode.WATERWORLD),
@@ -503,7 +471,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_POPULATION, 6)
         )
     ),
-
     LUXURIES_ILLEGAL(
         "Luxuries, Illegal",
         set(PlanetCode.AGRICULTURAL, PlanetCode.GARDEN, PlanetCode.WATERWORLD),
@@ -518,7 +485,6 @@ public enum TradeGood {
             entry(PlanetCode.HIGH_POPULATION, 4)
         )
     ),
-
     WEAPONS_ILLEGAL(
         "Weapons, Illegal",
         set(PlanetCode.INDUSTRIAL, PlanetCode.HIGH_TECH),
@@ -745,8 +711,8 @@ public enum TradeGood {
     }
 
     // tiny entry() utility to avoid verbose put()s in constants
-    private static Map.Entry<PlanetCode, Integer> entry(PlanetCode code, int val) {
-        return Map.entry(code, val); // Java 9+
+    private static Map.Entry<PlanetCode, Integer> entry(PlanetCode planet_code, int dice_modifier) {
+        return Map.entry(planet_code, dice_modifier); // Java 9+
     }
     // End ChatGPT code
 }
