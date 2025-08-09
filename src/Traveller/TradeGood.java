@@ -715,4 +715,9 @@ public enum TradeGood {
         return Map.entry(planet_code, dice_modifier); // Java 9+
     }
     // End ChatGPT code
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

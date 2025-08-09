@@ -41,9 +41,14 @@ public enum PlanetCode {
     public String get_code() { return code; }
 
     private static final Map<String, PlanetCode> CODES_BY_NAME = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(PlanetCode::name, planet_code -> planet_code));
+        .collect(Collectors.toUnmodifiableMap(PlanetCode::get_name, planet_code -> planet_code));
 
     public static PlanetCode get_code(String name) {
         return CODES_BY_NAME.get(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
