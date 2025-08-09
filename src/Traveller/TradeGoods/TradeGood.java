@@ -25,40 +25,62 @@ public abstract class TradeGood {
     /// Planet codes and their modifiers added when selling, or subtracted when purchasing
     HashMap<PlanetCode, Integer> sale_modifiers;
 
+    /// The assumed outcome of rolling 2D6 for trading, for simplicity
     private static final int NORMAL_TRADE_ROLL = 8;
+    /// The assumed Broker skill of buyers and suppliers trading goods
     private static final int NORMAL_BROKER_SKILL = 2;
 
+    /// Where a lower trade roll outcome stops creating worse trade outcomes
     private static final int MINIMUM_TRADE_ROLL = -3;
+    /// Where a higher trade roll outcome stops creating better trade outcomes
     private static final int MAXIMUM_TRADE_ROLL = 25;
 
-    private static final float[] PURCHASE_MODIFIERS = new float[] {
+    /// Multipliers for purchase price, with trade roll outcome as a pseudo-index
+    private static final float[] PURCHASE_MULTIPLIERS = new float[] {
         3.00f, 2.50f, 2.00f, 1.75f, 1.50f, 1.35f, 1.25f, 1.20f, 1.15f, 1.10f,
         1.05f, 1.00f, 0.95f, 0.90f, 0.85f, 0.80f, 0.75f, 0.70f, 0.65f, 0.60f,
         0.55f, 0.50f, 0.45f, 0.40f, 0.35f, 0.30f, 0.25f, 0.20f, 0.15f
     };
-    private static final float[] SALE_MODIFIERS = new float[] {
+    /// Multipliers for sale price, with trade roll outcome as a pseudo-index
+    private static final float[] SALE_MULTIPLIERS = new float[] {
         0.10f, 0.20f, 0.30f, 0.40f, 0.45f, 0.50f, 0.55f, 0.60f, 0.65f, 0.70f,
         0.75f, 0.80f, 0.85f, 0.90f, 1.00f, 1.05f, 1.10f, 1.15f, 1.20f, 1.25f,
         1.30f, 1.40f, 1.50f, 1.60f, 1.75f, 2.00f, 2.50f, 3.00f, 4.00f
     };
 
+    /**
+     * Gets the price to purchase a number of tons of this trade good
+     * on a certain planet.
+     * 
+     * @param tons How many tons to purchase
+     * @param planet What planet the trade good is being bought on
+     * @return Total price of purchasing the number of tons of this trade good on the planet
+     */
     public double get_purchase_price(int tons, Planet planet) {
         return tons * get_base_purchase_price(planet);
     }
 
+    /**
+     * Gets the price to sell a number of tons of this trade good
+     * on a certain planet.
+     * 
+     * @param tons How many tons to sell
+     * @param planet What planet the trade good is being sold on
+     * @return Total price of selling the number of tons of this trade good on the planet
+     */
     public double get_sale_price(int tons, Planet planet) {
         return tons * get_base_sale_price(planet);
     }
 
     private double get_base_purchase_price(Planet planet) {
         int modifier = get_total_purchase_modifier(NORMAL_BROKER_SKILL, NORMAL_BROKER_SKILL, planet);
-        float multiplier = get_price_multiplier(NORMAL_TRADE_ROLL + modifier, PURCHASE_MODIFIERS);
+        float multiplier = get_price_multiplier(NORMAL_TRADE_ROLL + modifier, PURCHASE_MULTIPLIERS);
         return base_price * multiplier;
     }
 
     private double get_base_sale_price(Planet planet) {
         int modifier = get_total_sale_modifier(NORMAL_BROKER_SKILL, NORMAL_BROKER_SKILL, planet);
-        float multiplier = get_price_multiplier(NORMAL_TRADE_ROLL + modifier, SALE_MODIFIERS);
+        float multiplier = get_price_multiplier(NORMAL_TRADE_ROLL + modifier, SALE_MULTIPLIERS);
         return base_price * multiplier;
     }
 
@@ -129,6 +151,13 @@ public abstract class TradeGood {
         }
     }
 
+    /**
+     * Gets price multiplier for buying/selling for the given roll.
+     * 
+     * @param total_roll Dice roll + modifiers for buying/selling
+     * @param modifier_array Which array of multipliers the result is being taken from (buying/selling)
+     * @return Price multiplier for the roll from the array
+     */
     private float get_price_multiplier(int total_roll, float[] modifier_array) {
         total_roll = Math.clamp(total_roll, MINIMUM_TRADE_ROLL, MAXIMUM_TRADE_ROLL);
         return modifier_array[total_roll - MINIMUM_TRADE_ROLL];
