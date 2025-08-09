@@ -1,6 +1,5 @@
 package Traveller;
 
-import Traveller.Planets.Planet;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
@@ -559,6 +558,17 @@ public enum TradeGood {
         this.base_price = base_price;
         this.purchase_modifiers = purchase_modifiers;
         this.sale_modifiers = sale_modifiers;
+    }
+
+    public int get_buyable_tons(double available_credits, int available_storage, Planet planet) {
+        // Get how many tons can be afforded
+        double price = get_purchase_price(1, planet);
+        int affordable_tons = (int)Math.floor(available_credits / price);
+
+        // Get the smaller of how many tons are available and can be stored
+        int maximum_tons = Math.min(get_maximum_tons(planet), available_storage);
+
+        return Math.min(affordable_tons, maximum_tons);
     }
 
     public int get_maximum_tons(Planet planet) {

@@ -1,6 +1,5 @@
-package Traveller.Planets;
+package Traveller;
 
-import Traveller.PlanetCode;
 import java.util.Arrays;
 
 public class Planet {
@@ -10,6 +9,13 @@ public class Planet {
 
     private final PlanetCode[] trade_codes;
     private final PlanetCode travel_code;
+
+    public Planet(String name, PlanetCode[] trade_codes, PlanetCode travel_code) {
+        this.name = name;
+        this.population = 6;
+        this.trade_codes = trade_codes;
+        this.travel_code = travel_code;
+    }
 
     public Planet(String name, int population, PlanetCode[] trade_codes, PlanetCode travel_code) {
         this.name = name;
