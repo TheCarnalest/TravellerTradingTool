@@ -512,7 +512,7 @@ public enum TradeGood {
     private final int tons_multiplier;
 
     /// Price in credits for one ton of the trade good
-    public final double base_price;
+    public final int base_price;
 
     /// Planet codes and their modifiers added when purchasing, or subtracted when selling
     private final Map<PlanetCode, Integer> purchase_modifiers;
@@ -547,7 +547,7 @@ public enum TradeGood {
         Set<PlanetCode> availability,
         int tons_dice,
         int tons_multiplier,
-        double base_price,
+        int base_price,
         Map<PlanetCode, Integer> purchase_modifiers,
         Map<PlanetCode, Integer> sale_modifiers
     ) {
@@ -560,9 +560,9 @@ public enum TradeGood {
         this.sale_modifiers = sale_modifiers;
     }
 
-    public int get_buyable_tons(double available_credits, int available_storage, Planet planet) {
+    public int get_buyable_tons(int available_credits, int available_storage, Planet planet) {
         // Get how many tons can be afforded
-        double price = get_purchase_price(1, planet);
+        int price = get_purchase_price(1, planet);
         int affordable_tons = (int)Math.floor(available_credits / price);
 
         // Get the smaller of how many tons are available and can be stored
@@ -603,7 +603,7 @@ public enum TradeGood {
      * @param planet What planet the trade good is being bought on
      * @return Total price of purchasing the number of tons of this trade good on the planet
      */
-    public double get_purchase_price(int tons, Planet planet) {
+    public int get_purchase_price(int tons, Planet planet) {
         return tons * get_base_purchase_price(planet);
     }
 
@@ -615,20 +615,36 @@ public enum TradeGood {
      * @param planet What planet the trade good is being sold on
      * @return Total price of selling the number of tons of this trade good on the planet
      */
-    public double get_sale_price(int tons, Planet planet) {
+    public int get_sale_price(int tons, Planet planet) {
         return tons * get_base_sale_price(planet);
     }
 
-    private double get_base_purchase_price(Planet planet) {
-        int modifier = get_total_purchase_modifier(NORMAL_BROKER_SKILL, NORMAL_BROKER_SKILL, planet);
-        float multiplier = get_price_multiplier(NORMAL_TRADE_ROLL + modifier, PURCHASE_MULTIPLIERS);
-        return base_price * multiplier;
+    private int get_base_purchase_price(Planet planet) {
+        return get_base_purchase_price(NORMAL_TRADE_ROLL, NORMAL_BROKER_SKILL, NORMAL_BROKER_SKILL, planet);
     }
 
-    private double get_base_sale_price(Planet planet) {
-        int modifier = get_total_sale_modifier(NORMAL_BROKER_SKILL, NORMAL_BROKER_SKILL, planet);
-        float multiplier = get_price_multiplier(NORMAL_TRADE_ROLL + modifier, SALE_MULTIPLIERS);
-        return base_price * multiplier;
+    private int get_base_purchase_price(int roll, int buyer_skill, Planet planet) {
+        return get_base_purchase_price(roll, buyer_skill, NORMAL_BROKER_SKILL, planet);
+    }
+
+    private int get_base_purchase_price(int roll, int buyer_skill, int supplier_skill, Planet planet) {
+        int modifier = get_total_purchase_modifier(buyer_skill, supplier_skill, planet);
+        float multiplier = get_price_multiplier(roll + modifier, PURCHASE_MULTIPLIERS);
+        return (int)Math.round(base_price * multiplier);
+    }
+
+    private int get_base_sale_price(Planet planet) {
+        return get_base_sale_price(NORMAL_TRADE_ROLL, NORMAL_BROKER_SKILL, NORMAL_BROKER_SKILL, planet);
+    }
+
+    private int get_base_sale_price(int roll, int supplier_skill, Planet planet) {
+        return get_base_sale_price(roll, supplier_skill, NORMAL_BROKER_SKILL, planet);
+    }
+
+    private int get_base_sale_price(int roll, int supplier_skill, int buyer_skill, Planet planet) {
+        int modifier = get_total_sale_modifier(supplier_skill, buyer_skill, planet);
+        float multiplier = get_price_multiplier(roll + modifier, SALE_MULTIPLIERS);
+        return (int)Math.round(base_price * multiplier);
     }
 
     private int get_total_purchase_modifier(int buyer_skill, int supplier_skill, Planet planet) {

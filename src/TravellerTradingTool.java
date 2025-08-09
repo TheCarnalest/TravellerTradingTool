@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class TravellerTradingTool {
     public static void main(String[] args) {
-        double available_credits;
+        int available_credits;
         int available_storage;
 
         Planet buying_planet;
@@ -15,7 +15,7 @@ public class TravellerTradingTool {
         try (Scanner scanner = new Scanner(System.in)) {
             // Gather preliminary data about the Traveller
             System.out.println("How many credits do you have available?");
-            available_credits = scanner.nextDouble();
+            available_credits = scanner.nextInt();
             scanner.nextLine();
 
             System.out.println("How many tons of storage do you have available?");
