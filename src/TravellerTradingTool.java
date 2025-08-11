@@ -33,11 +33,11 @@ public class TravellerTradingTool {
             System.out.println("What are its trade codes, separated by commas?");
             PlanetCode[] buying_planet_trade_codes = Arrays.stream(scanner.nextLine().split(","))
                 .map(String::trim)
-                .map(PlanetCode::get_code)
+                .map(PlanetCode::get_by_name)
                 .toArray(PlanetCode[]::new);
 
             System.out.println("What is its travel code?");
-            PlanetCode buying_planet_travel_code = PlanetCode.get_code(scanner.nextLine());
+            PlanetCode buying_planet_travel_code = PlanetCode.get_by_name(scanner.nextLine());
 
             buying_planet = new Planet(buying_planet_name, buying_planet_population, buying_planet_trade_codes, buying_planet_travel_code);
 
@@ -48,11 +48,11 @@ public class TravellerTradingTool {
             System.out.println("What are its trade codes, separated by commas?");
             PlanetCode[] selling_planet_trade_codes = Arrays.stream(scanner.nextLine().split(","))
                 .map(String::trim)
-                .map(PlanetCode::get_code)
+                .map(PlanetCode::get_by_name)
                 .toArray(PlanetCode[]::new);
 
             System.out.println("What is its travel code?");
-            PlanetCode selling_planet_travel_code = PlanetCode.get_code(scanner.nextLine());
+            PlanetCode selling_planet_travel_code = PlanetCode.get_by_name(scanner.nextLine());
 
             selling_planet = new Planet(selling_planet_name, selling_planet_trade_codes, selling_planet_travel_code);
         }
