@@ -1,4 +1,4 @@
-package Traveller;
+package org.thecarnalest;
 
 import java.util.Arrays;
 import java.util.Map;
