@@ -65,19 +65,23 @@ public class TravellerTradingTool {
             }
         }
 
-        // CALCULATE PROFIT GAINED FROM TRADING
+        // CALCULATE PROFIT GAINED FROM TRADING FOR ALL AVAILABLE TRADE GOODS
         for (TradeGood trade_good : available_trade_goods) {
             // Get amount of tons bought, skipping trade goods not bought at all
-            int bought_tons = trade_good.get_buyable_tons(available_credits, available_storage, buying_planet);
+            int bought_tons = trade_good.get_tradeable_tons(available_credits, available_storage, buying_planet);
             if (bought_tons <= 0) {
                 continue;
             }
+            
+            // Get cost, revenue, and profit
+            int buying_price = trade_good.get_purchase_price(bought_tons, buying_planet);
+            int selling_price = trade_good.get_sale_price(bought_tons, selling_planet);
+            int profit = selling_price - buying_price;
 
-            int buying_price = (int)Math.floor(trade_good.get_purchase_price(bought_tons, buying_planet));
-            int selling_price = (int)Math.floor(trade_good.get_sale_price(bought_tons, selling_planet));
+            // Display results of buying and selling this trade good
             System.out.printf(
                 "%d tons of %s will cost %d on %s and sell for %d on %s, creating %d of net profit.\n", 
-                bought_tons, trade_good.name, buying_price, buying_planet.name, selling_price, selling_planet.name, selling_price - buying_price
+                bought_tons, trade_good.name, buying_price, buying_planet.name, selling_price, selling_planet.name, profit
             );
         }
     }

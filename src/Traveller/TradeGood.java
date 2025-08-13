@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public enum TradeGood {
-    // Enums directly copied from ChatGPT 5 Thinking using the Traveller core rulebook with no edits of my own
+    // Enums directly copied from ChatGPT using the Traveller core rulebook with no edits of my own
     COMMON_ELECTRONICS(
         "Common Electronics",
         set(),                    // All
@@ -560,29 +560,40 @@ public enum TradeGood {
         this.sale_modifiers = sale_modifiers;
     }
 
-    public int get_buyable_tons(int available_credits, int available_storage, Planet planet) {
+    /**
+     * Get how many tons a trader can actually buy and transport from a planet. 
+     * AKA how many tons can be afforded, are available to buy, and can be stored. 
+     * Limited by available credits, storage, and maximum possible supply on a planet.
+     * 
+     * @param available_credits Credits available to buy goods with
+     * @param available_storage Ship storage space available to store goods in
+     * @param planet Planet the goods are being bought on
+     * @return Amount of tons that can be traded/bought and transported.
+     */
+    public int get_tradeable_tons(int available_credits, int available_storage, Planet planet) {
         // Get how many tons can be afforded
         int price = get_purchase_price(1, planet);
         int affordable_tons = (int)Math.floor(available_credits / price);
 
         // Get the smaller of how many tons are available and can be stored
-        int maximum_tons = Math.min(get_maximum_tons(planet), available_storage);
+        int maximum_tons = Math.min(get_maximum_available_tons(planet), available_storage);
 
         return Math.min(affordable_tons, maximum_tons);
     }
 
-    public int get_maximum_tons(Planet planet) {
-        int dice_modifier = planet.population - 6;
-        return (tons_dice * 6 + dice_modifier) * tons_multiplier;
-    }
-
-    public int get_maximum_tons() {
-        return tons_dice * 6 * tons_multiplier;
-    }
-
+    /**
+     * Get if this trade good can be bought on a certain planet
+     * 
+     * @param planet Planet being checked for if this trade good can be bought on it
+     * @return If the trade good can be bought on the planet
+     */
     public boolean is_available_on(Planet planet) {
+        // Empty availability indicates the trade good is always available
+        if (availability.isEmpty())
+            return true;
+
         for (PlanetCode planet_code : planet.get_planet_codes()) {
-            if (is_available_on(planet_code)) {
+            if (availability.contains(planet_code)) {
                 return true;
             }
         }
@@ -590,6 +601,12 @@ public enum TradeGood {
         return false;
     }
 
+    /**
+     * Get if this trade good can be bought on a certain planet code
+     * 
+     * @param planet_code Planet code being checked for if this trade good can be bought on it
+     * @return If the trade good can be bought on the planet code
+     */
     public boolean is_available_on(PlanetCode planet_code) {
         // Empty availability indicates the trade good is always available
         return availability.isEmpty() || availability.contains(planet_code);
@@ -619,42 +636,127 @@ public enum TradeGood {
         return tons * get_base_sale_price(planet);
     }
 
+    /**
+     * Get how many tons can be bought with a maximum roll result
+     * on a certain planet.
+     * 
+     * @param planet Planet the trade good is being bought on
+     * @return How many tons can be bought on the planet at maximum
+     */
+    private int get_maximum_available_tons(Planet planet) {
+        return get_available_tons(tons_dice * 6, planet);
+    }
+
+    /**
+     * Get how many tons can be bought with a certain roll on a
+     * certain planet.
+     * 
+     * @param roll Result of the trade dice roll
+     * @param planet Planet the trade good is being bought on
+     * @return How many tons can be bought with the roll on the planet
+     */
+    private int get_available_tons(int roll, Planet planet) {
+        return get_available_tons(roll + planet.get_goods_amount_modifier());
+    }
+
+    /**
+     * Get how many tons can be bought with a certain roll with
+     * no planet modifiers.
+     * 
+     * @param roll Result of the trade dice roll
+     * @return How many tons can be bought with the roll
+     */
+    private int get_available_tons(int roll) {
+        return roll * tons_multiplier;
+    }
+
+    /**
+     * Get purchase price per ton on a certain planet, assuming average roll
+     * and equal Broker skill between buyer and supplier.
+     * 
+     * @param planet Planet the trade good is being bought on
+     * @return Purchase price on the planet with average roll and default Broker skills
+     */
     private int get_base_purchase_price(Planet planet) {
         return get_base_purchase_price(NORMAL_TRADE_ROLL, NORMAL_BROKER_SKILL, NORMAL_BROKER_SKILL, planet);
     }
 
-    private int get_base_purchase_price(int roll, int buyer_skill, Planet planet) {
-        return get_base_purchase_price(roll, buyer_skill, NORMAL_BROKER_SKILL, planet);
-    }
-
+    /**
+     * Get purchase price per ton on a certain planet with a certain trade roll, buyer
+     * Broker skill and supplier Broker skill
+     * 
+     * @param roll Result of the 2D6 trading dice roll
+     * @param buyer_skill Broker skill of the buyer
+     * @param supplier_skill Broker skill of the supplier
+     * @param planet Planet the trade good is being bought on
+     * @return Purchase price on the planet with the roll, buyer skill, and supplier skill
+     */
     private int get_base_purchase_price(int roll, int buyer_skill, int supplier_skill, Planet planet) {
-        int modifier = get_total_purchase_modifier(buyer_skill, supplier_skill, planet);
-        float multiplier = get_price_multiplier(roll + modifier, PURCHASE_MULTIPLIERS);
+        int roll_modifier = get_total_purchase_modifier(buyer_skill, supplier_skill, planet);
+        float multiplier = get_price_multiplier(roll + roll_modifier, PURCHASE_MULTIPLIERS);
         return (int)Math.round(base_price * multiplier);
     }
 
+    /**
+     * Get sale price per ton on a certain planet, assuming average roll
+     * and equal Broker skill between supplier and buyer.
+     * 
+     * @param planet Planet the trade good is being sold on
+     * @return Sale price on the planet with average roll and default Broker skills
+     */
     private int get_base_sale_price(Planet planet) {
         return get_base_sale_price(NORMAL_TRADE_ROLL, NORMAL_BROKER_SKILL, NORMAL_BROKER_SKILL, planet);
     }
 
-    private int get_base_sale_price(int roll, int supplier_skill, Planet planet) {
-        return get_base_sale_price(roll, supplier_skill, NORMAL_BROKER_SKILL, planet);
-    }
-
+    /**
+     * Get sale price per ton on a certain planet with a certain trade roll, supplier
+     * Broker skill and buyer Broker skill.
+     * 
+     * @param roll Result of the 2D6 trading dice roll
+     * @param supplier_skill Broker skill of the supplier
+     * @param broker_skill Broker skill of the buyer
+     * @param planet Planet the trade good is being sold on
+     * @return Sale price on the planet with the roll, supplier skill, and buyer skill
+     */
     private int get_base_sale_price(int roll, int supplier_skill, int buyer_skill, Planet planet) {
-        int modifier = get_total_sale_modifier(supplier_skill, buyer_skill, planet);
-        float multiplier = get_price_multiplier(roll + modifier, SALE_MULTIPLIERS);
+        int roll_modifier = get_total_sale_modifier(supplier_skill, buyer_skill, planet);
+        float multiplier = get_price_multiplier(roll + roll_modifier, SALE_MULTIPLIERS);
         return (int)Math.round(base_price * multiplier);
     }
 
+    /**
+     * Get roll modifiers for purchasing on a certain planet with a certain buyer skill
+     * and supplier skill.
+     * 
+     * @param buyer_skill Broker skill of the buyer
+     * @param supplier_skill Broker skill of the supplier
+     * @param planet Planet the trade good is being bought on
+     * @return Roll modifiers for buying with buyer skill, supplier skill, and planet
+     */
     private int get_total_purchase_modifier(int buyer_skill, int supplier_skill, Planet planet) {
         return buyer_skill - supplier_skill + get_planet_purchase_modifier(planet);
     }
 
+    /**
+     * Get roll modifiers for selling on a certain planet with a certain supplier skill
+     * and buyer skill.
+     * 
+     * @param supplier_skill Broker skill of the supplier
+     * @param buyer_skill Broker skill of the buyer
+     * @param planet Planet the trade good is being sold on
+     * @return Roll modifiers for selling with supplier skill, buyer skill, and planet
+     */
     private int get_total_sale_modifier(int supplier_skill, int buyer_skill, Planet planet) {
         return supplier_skill - buyer_skill + get_planet_sale_modifier(planet);
     }
 
+    /**
+     * Gets the total trade roll modifier for purchasing on a
+     * certain planet.
+     * 
+     * @param planet Planet the trade good is being bought on
+     * @return Roll modifier for buying the good on the planet 
+     */
     private int get_planet_purchase_modifier(Planet planet) {
         int modifier = 0;
 
@@ -665,6 +767,13 @@ public enum TradeGood {
         return modifier;
     }
 
+    /**
+     * Gets the total trade roll modifier for selling on a
+     * certain planet.
+     * 
+     * @param planet Planet the trade good is being sold on
+     * @return Roll modifier for selling the good on the planet 
+     */
     private int get_planet_sale_modifier(Planet planet) {
         int modifier = 0;
 
@@ -722,7 +831,7 @@ public enum TradeGood {
         return modifier_array[total_roll - MINIMUM_TRADE_ROLL];
     }
 
-    // The code below is taken directly from ChatGPT 5 Thinking with some edits to conform to my style
+    // The code below is taken directly from ChatGPT with some edits to conform to my style
     private static Set<PlanetCode> set(PlanetCode... codes) {
         return (codes.length == 0) ? Set.of() : EnumSet.of(codes[0], codes);
     }

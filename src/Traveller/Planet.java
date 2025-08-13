@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Planet {
     public final String name;
     
-    public final int population;
+    private final int population;
 
     private final PlanetCode[] trade_codes;
     private final PlanetCode travel_code;
@@ -22,6 +22,10 @@ public class Planet {
         this.population = population;
         this.trade_codes = trade_codes;
         this.travel_code = travel_code;
+    }
+
+    public int get_goods_amount_modifier() {
+        return population - 6;
     }
 
     public PlanetCode[] get_planet_codes() {
