@@ -68,6 +68,7 @@ public enum PlanetCode {
         .collect(Collectors.toUnmodifiableMap(PlanetCode::get_code, planet_code -> planet_code));
 
     public String get_name() { return name; }
+    
     public String get_code() { return code; }
 
     /**

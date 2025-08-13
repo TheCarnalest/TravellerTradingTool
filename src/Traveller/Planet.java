@@ -24,10 +24,24 @@ public class Planet {
         this.travel_code = travel_code;
     }
 
+    /**
+     * Get this planet's roll modifier for how many
+     * of a good are available on it, which is 
+     * population - 6, so more goods at high
+     * populations, less at low populations.
+     * 
+     * @return Roll modifier for trade good ton availability
+     */
     public int get_goods_amount_modifier() {
         return population - 6;
     }
 
+    /**
+     * Get all of a planet's planet codes, which are its
+     * trade codes + travel code in one array.
+     * 
+     * @return The planet's trade codes and its travel code
+     */
     public PlanetCode[] get_planet_codes() {
         PlanetCode[] planet_codes = Arrays.copyOf(trade_codes, trade_codes.length + 1);
         planet_codes[trade_codes.length] = travel_code;
