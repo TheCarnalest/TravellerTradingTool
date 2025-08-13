@@ -1,4 +1,4 @@
-package org.thecarnalest;
+package org.thecarnalest.travellertool;
 
 import java.util.Arrays;
 
